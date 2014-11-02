@@ -19,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/guangwong/aeropress/issues"
   },
-  "homepage": "https://github.com/guangwong/aeropress"
+  "homepage": "https://github.com/guangwong/aeropress",
+  "dependencies": {
+    "underscore": "1.7.0"
+  }
 }
