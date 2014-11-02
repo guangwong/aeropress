@@ -1,0 +1,23 @@
+{
+  "name": "aeropress",
+  "version": "0.0.1",
+  "description": "An LR parser generator with a simple lexer",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/guangwong/aeropress.git"
+  },
+  "keywords": [
+    "Aeropress",
+    "LR"
+  ],
+  "author": "GuangWong",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/guangwong/aeropress/issues"
+  },
+  "homepage": "https://github.com/guangwong/aeropress"
+}
