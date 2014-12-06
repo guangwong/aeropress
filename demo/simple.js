@@ -1,7 +1,7 @@
 var Aeropress = require("../index");
 var SimpleCFG = require("./simple.cfg");
 
-var generatorOfTheSimple = new Aeropress.LR0({
+var generatorOfTheSimple = new Aeropress.SLR1({
     grammar : SimpleCFG.grammar,
     ignore : SimpleCFG.ignore,
     lex : SimpleCFG.lex
