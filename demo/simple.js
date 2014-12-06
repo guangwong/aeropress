@@ -1,14 +1,14 @@
 var Aeropress = require("../index");
 var SimpleCFG = require("./simple.cfg");
 
-var generatorOfTheSimple = new Aeropress.LR1({
+var generatorOfTheSimple = new Aeropress.LR0({
     grammar : SimpleCFG.grammar,
     ignore : SimpleCFG.ignore,
     lex : SimpleCFG.lex
 });
 
-var syntaxParserCodeCore = generatorOfTheSimple.genCodeCore();
-codeCore.writeToFS(__dirname + "/simple_core_code.js");
+//var syntaxParserCodeCore = generatorOfTheSimple.genCodeCore();
+//codeCore.writeToFS(__dirname + "/simple_core_code.js");
 
 
 
