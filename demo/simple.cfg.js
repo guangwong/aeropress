@@ -16,6 +16,7 @@ exports.grammar = [
     {
         "symbol": "expression",
         "rhs": [
+            ["empty"],
             ["term"],
             ["ID", "EQ", "term"]
         ]
@@ -33,6 +34,12 @@ exports.grammar = [
             ["NUMBER"],
             ["ID"],
             ["PARENTHESIS_OP", "expression", "PARENTHESIS_ED"]
+        ]
+    },
+    {
+        "symbol": "empty",
+        "rhs": [
+            [] // 作为 ε
         ]
     }
 ];
