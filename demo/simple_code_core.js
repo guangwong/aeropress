@@ -183,6 +183,6 @@ function pda_accept_callback(result){
 
 
 var result = parser_parse("$a=$c+(1-2)-$d;");
-debugger;
+//debugger;
 console.log(JSON.stringify(result,null,2));
 
