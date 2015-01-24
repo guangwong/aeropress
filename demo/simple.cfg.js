@@ -1,8 +1,6 @@
 // 语法规则
 // G 符号为初态
 
-
-
 exports.grammar = [
     {
         "symbol": "G",
