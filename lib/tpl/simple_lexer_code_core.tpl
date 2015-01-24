@@ -1,3 +1,4 @@
+
 var rules = [<% print(rules.map(function(n){
         return  '{' + [
             '"symbol":"' + n.symbol + '"',
@@ -5,20 +6,30 @@ var rules = [<% print(rules.map(function(n){
             '"fn":' + (n.fn ? n.fn.toString() : null),
         ].join(', ') + '}'
     }).join(',')) %>];
-var lexer_buffer = "";
-var lexer_context = {
-    pos : 0,
-    ln : 0,
-    lnPos : 0
-};
 
-var lexer_out_buffer = []; // 为了可以 peek 多个符号而设计
+var lexer_buffer;
+var lexer_context;
+var lexer_out_buffer; // 为了可以 peek 多个符号而设计
 
 function lexer_in(str){
     lexer_buffer = lexer_buffer + str;
 }
 
+function lexer_reset(){
+
+    lexer_out_buffer = [];
+    lexer_context = {
+        pos : 0,
+        ln : 0,
+        lnPos : 0
+    };
+    lexer_buffer = "";
+}
+
 function lexer_out(){ // 输出一个符号
+    if(lexer_context.pos >= lexer_buffer.length){
+        return null;
+    }
     var tok;
     if(lexer_out_buffer.length){
         tok = lexer_out_buffer.shift();
@@ -84,5 +95,4 @@ function lexer_match(){ // Match 一个 tok
 function lexer_format_context(){
     return "TODO:implement it";
 }
-
 
