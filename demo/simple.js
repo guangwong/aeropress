@@ -6,7 +6,7 @@ var generatorOfTheSimple = new Aeropress.SLR1({
     ignore : SimpleCFG.ignore,
     lex : SimpleCFG.lex
 });
-console.log( generatorOfTheSimple.getTable() );
+console.log( JSON.stringify(generatorOfTheSimple.getTable() ,null, 4));
 
 //var syntaxParserCodeCore = generatorOfTheSimple.genCodeCore();
 //codeCore.writeToFS(__dirname + "/simple_core_code.js");
