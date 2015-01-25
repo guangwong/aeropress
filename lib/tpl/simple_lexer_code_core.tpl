@@ -40,7 +40,7 @@ function lexer_out(){ // 輸出一個符號
     }
 
     if(!tok){
-        throw (new Error("未知符號在> " + lexer_format_context() ));
+        throw (new Error(" 未知符號在> " + lexer_format_context() + " " ));
     }
 
     tok.pos = lexer_context.pos;
@@ -68,7 +68,7 @@ function lexer_peek(){ // 向偷看一個符號
     }
 
     if(!tok){
-        throw (new Error("未知符號在> ", + lexer_format_context() ));
+        throw (new Error(" 未知符號在> " + lexer_format_context() + " " ));
     }
 
     return tok;
