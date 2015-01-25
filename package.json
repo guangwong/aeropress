@@ -1,6 +1,6 @@
 {
   "name": "aeropress",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "An LR parser generator with a simple lexer",
   "main": "index.js",
   "scripts": {
