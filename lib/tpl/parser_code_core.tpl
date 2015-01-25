@@ -1,3 +1,6 @@
+
+var SUPER_SYMBOL_END = "$$";
+
 var parser_accept_callback_result;
 function parser_reset(){
     parser_accept_callback_result = null;
@@ -12,10 +15,7 @@ function parser_parse(code){
     while(tok = lexer_out()){
         pda_in(wrapSymbol(tok.symbol, tok));
     }
-    pda_in(wrapSymbol(SUPER_T_END));
-    if(!parser_accept_callback_result){
-        throw new Error("不能停機");
-    }
+    pda_in(wrapSymbol(SUPER_SYMBOL_END));
     return parser_accept_callback_result;
 }
 
