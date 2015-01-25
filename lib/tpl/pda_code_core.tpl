@@ -1,13 +1,9 @@
 
-var SUPER_T_BEGIN = "$#";
-var SUPER_T_END = "$$";
-var SUPER_T_G = "$G";
+var pda_table = <% print(JSON.stringify(table)) %>;
 
-var pda_table = <% print(JSON.stringify(table)) %>
 var pda_symbol_stack = [];
 var pda_state_stack = [];
 
-// 向pda輸入一個符號
 function pda_in(inpt){
 
     var symbol = inpt.symbol;
@@ -60,5 +56,8 @@ function wrapSymbol(symbol, value){
 }
 
 function pda_format_context(){
-    return "TODO:implement it";
+    var pda_symbol_stack = [];
+    var pda_state_stack = [];
+        return "pda_symbol_stack : " + pda_symbol_stack.map(function(n){return n.symbol}).join(" , ")
+            + "\n" + "pda_state_stack : " + pda_state_stack.join(" , ");
 }

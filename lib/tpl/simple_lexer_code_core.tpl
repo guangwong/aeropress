@@ -9,7 +9,7 @@ var rules = [<% print(rules.map(function(n){
 
 var lexer_buffer;
 var lexer_context;
-var lexer_out_buffer; // 为了可以 peek 多个符号而设计
+var lexer_out_buffer; // 為了 LL 時進行符號 Peek 設計的
 
 function lexer_in(str){
     lexer_buffer = lexer_buffer + str;
@@ -26,7 +26,7 @@ function lexer_reset(){
     lexer_buffer = "";
 }
 
-function lexer_out(){ // 输出一个符号
+function lexer_out(){ // 輸出一個符號
     if(lexer_context.pos >= lexer_buffer.length){
         return null;
     }
@@ -38,7 +38,7 @@ function lexer_out(){ // 输出一个符号
     }
 
     if(!tok){
-        throw (new Error("未知符号在位置：" + lexer_format_context() ));
+        throw (new Error("未知符號在：" + lexer_format_context() ));
     }
 
     tok.pos = lexer_context.pos;
@@ -54,7 +54,7 @@ function lexer_out(){ // 输出一个符号
 
 }
 
-function lexer_peek(){ // 向前偷看1个符号
+function lexer_peek(){ // 向偷看一個符號
 
     var tok;
 
@@ -65,21 +65,21 @@ function lexer_peek(){ // 向前偷看1个符号
     }
 
     if(!tok){
-        throw (new Error("未知符号在位置：", + lexer_format_context() ));
+        throw (new Error("未知符號在：", + lexer_format_context() ));
     }
 
     return tok;
 
 }
 
-function lexer_match(){ // Match 一个 tok
+function lexer_match(){ // Match a tok
 
     var curText = lexer_buffer.substring(lexer_context.pos);
     var tokMatched = null;
 
     for(var idx = 0, len = rules.length; idx < len; idx++){
         var rule = rules[idx];
-        var regRet  = rule.reg.exec(curText);  // 长的优先，同长度后定义的优先
+        var regRet  = rule.reg.exec(curText);  // 長的優先，同長度後來者優先
         if( regRet && ( !tokMatched || regRet[0].length >= tokMatched.length ) ){
             if(!tokMatched) tokMatched = {};
             tokMatched.regRet = regRet;
@@ -93,6 +93,7 @@ function lexer_match(){ // Match 一个 tok
 }
 
 function lexer_format_context(){
-    return "TODO:implement it";
+    var curText = lexer_buffer.substring(lexer_context.pos);
+    return curText.substring(0,128);
 }
 

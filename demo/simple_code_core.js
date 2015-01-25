@@ -5,7 +5,7 @@ var rules = [{"symbol":"BLANK", "reg":/^\s+/, "fn":null},{"symbol":"SEMICOLON", 
 
 var lexer_buffer;
 var lexer_context;
-var lexer_out_buffer; // 为了可以 peek 多个符号而设计
+var lexer_out_buffer; // 為了 LL 時進行符號 Peek 設計的
 
 function lexer_in(str){
     lexer_buffer = lexer_buffer + str;
@@ -22,7 +22,7 @@ function lexer_reset(){
     lexer_buffer = "";
 }
 
-function lexer_out(){ // 输出一个符号
+function lexer_out(){ // 輸出一個符號
     if(lexer_context.pos >= lexer_buffer.length){
         return null;
     }
@@ -34,7 +34,7 @@ function lexer_out(){ // 输出一个符号
     }
 
     if(!tok){
-        throw (new Error("未知符号在位置：" + lexer_format_context() ));
+        throw (new Error("未知符號在：" + lexer_format_context() ));
     }
 
     tok.pos = lexer_context.pos;
@@ -50,7 +50,7 @@ function lexer_out(){ // 输出一个符号
 
 }
 
-function lexer_peek(){ // 向前偷看1个符号
+function lexer_peek(){ // 向偷看一個符號
 
     var tok;
 
@@ -61,21 +61,21 @@ function lexer_peek(){ // 向前偷看1个符号
     }
 
     if(!tok){
-        throw (new Error("未知符号在位置：", + lexer_format_context() ));
+        throw (new Error("未知符號在：", + lexer_format_context() ));
     }
 
     return tok;
 
 }
 
-function lexer_match(){ // Match 一个 tok
+function lexer_match(){ // Match a tok
 
     var curText = lexer_buffer.substring(lexer_context.pos);
     var tokMatched = null;
 
     for(var idx = 0, len = rules.length; idx < len; idx++){
         var rule = rules[idx];
-        var regRet  = rule.reg.exec(curText);  // 长的优先，同长度后定义的优先
+        var regRet  = rule.reg.exec(curText);  // 長的優先，同長度後來者優先
         if( regRet && ( !tokMatched || regRet[0].length >= tokMatched.length ) ){
             if(!tokMatched) tokMatched = {};
             tokMatched.regRet = regRet;
@@ -89,19 +89,16 @@ function lexer_match(){ // Match 一个 tok
 }
 
 function lexer_format_context(){
-    return "TODO:implement it";
+    var curText = lexer_buffer.substring(lexer_context.pos);
+    return curText.substring(0,128);
 }
 
 
-var SUPER_T_BEGIN = "$#";
-var SUPER_T_END = "$$";
-var SUPER_T_G = "$G";
+var pda_table = {"action":[{"PARENTHESIS_OP":{"type":"shift","value":1},"ID":{"type":"shift","value":2},"NUMBER":{"type":"shift","value":3},"SEMICOLON":{"type":"reduce","value":0,"symbol":"empty"}},{"PARENTHESIS_OP":{"type":"shift","value":10},"ID":{"type":"shift","value":11},"NUMBER":{"type":"shift","value":12},"PARENTHESIS_ED":{"type":"reduce","value":0,"symbol":"empty"}},{"EQ":{"type":"shift","value":17},"SEMICOLON":{"type":"reduce","value":1,"symbol":"factor"},"OPERATOR":{"type":"reduce","value":1,"symbol":"factor"}},{"SEMICOLON":{"type":"reduce","value":1,"symbol":"factor"},"OPERATOR":{"type":"reduce","value":1,"symbol":"factor"}},{"$$":{"type":"accept","value":1,"symbol":"$G"}},{"$$":{"type":"reduce","value":1,"symbol":"G"}},{"SEMICOLON":{"type":"shift","value":18}},{"OPERATOR":{"type":"shift","value":19},"SEMICOLON":{"type":"reduce","value":1,"symbol":"expression"}},{"SEMICOLON":{"type":"reduce","value":1,"symbol":"term"},"OPERATOR":{"type":"reduce","value":1,"symbol":"term"}},{"SEMICOLON":{"type":"reduce","value":1,"symbol":"expression"}},{"PARENTHESIS_OP":{"type":"shift","value":10},"ID":{"type":"shift","value":11},"NUMBER":{"type":"shift","value":12},"PARENTHESIS_ED":{"type":"reduce","value":0,"symbol":"empty"}},{"EQ":{"type":"shift","value":21},"PARENTHESIS_ED":{"type":"reduce","value":1,"symbol":"factor"},"OPERATOR":{"type":"reduce","value":1,"symbol":"factor"}},{"PARENTHESIS_ED":{"type":"reduce","value":1,"symbol":"factor"},"OPERATOR":{"type":"reduce","value":1,"symbol":"factor"}},{"PARENTHESIS_ED":{"type":"shift","value":22}},{"OPERATOR":{"type":"shift","value":23},"PARENTHESIS_ED":{"type":"reduce","value":1,"symbol":"expression"}},{"PARENTHESIS_ED":{"type":"reduce","value":1,"symbol":"term"},"OPERATOR":{"type":"reduce","value":1,"symbol":"term"}},{"PARENTHESIS_ED":{"type":"reduce","value":1,"symbol":"expression"}},{"PARENTHESIS_OP":{"type":"shift","value":1},"ID":{"type":"shift","value":24},"NUMBER":{"type":"shift","value":3}},{"$$":{"type":"reduce","value":2,"symbol":"statement"}},{"PARENTHESIS_OP":{"type":"shift","value":1},"ID":{"type":"shift","value":24},"NUMBER":{"type":"shift","value":3}},{"PARENTHESIS_ED":{"type":"shift","value":27}},{"PARENTHESIS_OP":{"type":"shift","value":10},"ID":{"type":"shift","value":28},"NUMBER":{"type":"shift","value":12}},{"SEMICOLON":{"type":"reduce","value":3,"symbol":"factor"},"OPERATOR":{"type":"reduce","value":3,"symbol":"factor"}},{"PARENTHESIS_OP":{"type":"shift","value":10},"ID":{"type":"shift","value":28},"NUMBER":{"type":"shift","value":12}},{"SEMICOLON":{"type":"reduce","value":1,"symbol":"factor"},"OPERATOR":{"type":"reduce","value":1,"symbol":"factor"}},{"OPERATOR":{"type":"shift","value":19},"SEMICOLON":{"type":"reduce","value":3,"symbol":"expression"}},{"OPERATOR":{"type":"shift","value":19},"SEMICOLON":{"type":"reduce","value":3,"symbol":"term"}},{"PARENTHESIS_ED":{"type":"reduce","value":3,"symbol":"factor"},"OPERATOR":{"type":"reduce","value":3,"symbol":"factor"}},{"PARENTHESIS_ED":{"type":"reduce","value":1,"symbol":"factor"},"OPERATOR":{"type":"reduce","value":1,"symbol":"factor"}},{"OPERATOR":{"type":"shift","value":23},"PARENTHESIS_ED":{"type":"reduce","value":3,"symbol":"expression"}},{"OPERATOR":{"type":"shift","value":23},"PARENTHESIS_ED":{"type":"reduce","value":3,"symbol":"term"}}],"goto":[{"G":{"type":"goto","value":4},"statement":{"type":"goto","value":5},"expression":{"type":"goto","value":6},"term":{"type":"goto","value":7},"factor":{"type":"goto","value":8},"empty":{"type":"goto","value":9}},{"expression":{"type":"goto","value":13},"term":{"type":"goto","value":14},"factor":{"type":"goto","value":15},"empty":{"type":"goto","value":16}},{},{},{},{},{},{},{},{},{"expression":{"type":"goto","value":20},"term":{"type":"goto","value":14},"factor":{"type":"goto","value":15},"empty":{"type":"goto","value":16}},{},{},{},{},{},{},{"term":{"type":"goto","value":25},"factor":{"type":"goto","value":8}},{},{"term":{"type":"goto","value":26},"factor":{"type":"goto","value":8}},{},{"term":{"type":"goto","value":29},"factor":{"type":"goto","value":15}},{},{"term":{"type":"goto","value":30},"factor":{"type":"goto","value":15}},{},{},{},{},{},{},{}]};
 
-var pda_table = {"action":[{"PARENTHESIS_OP":{"type":"shift","value":1},"ID":{"type":"shift","value":2},"NUMBER":{"type":"shift","value":3},"SEMICOLON":{"type":"reduce","value":0,"symbol":"empty"}},{"PARENTHESIS_OP":{"type":"shift","value":10},"ID":{"type":"shift","value":11},"NUMBER":{"type":"shift","value":12},"PARENTHESIS_ED":{"type":"reduce","value":0,"symbol":"empty"}},{"EQ":{"type":"shift","value":17},"SEMICOLON":{"type":"reduce","value":1,"symbol":"factor"},"OPERATOR":{"type":"reduce","value":1,"symbol":"factor"}},{"SEMICOLON":{"type":"reduce","value":1,"symbol":"factor"},"OPERATOR":{"type":"reduce","value":1,"symbol":"factor"}},{"$$":{"type":"accept","value":1,"symbol":"$G"}},{"$$":{"type":"reduce","value":1,"symbol":"G"}},{"SEMICOLON":{"type":"shift","value":18}},{"OPERATOR":{"type":"shift","value":19},"SEMICOLON":{"type":"reduce","value":1,"symbol":"expression"}},{"SEMICOLON":{"type":"reduce","value":1,"symbol":"term"},"OPERATOR":{"type":"reduce","value":1,"symbol":"term"}},{"SEMICOLON":{"type":"reduce","value":1,"symbol":"expression"}},{"PARENTHESIS_OP":{"type":"shift","value":10},"ID":{"type":"shift","value":11},"NUMBER":{"type":"shift","value":12},"PARENTHESIS_ED":{"type":"reduce","value":0,"symbol":"empty"}},{"EQ":{"type":"shift","value":21},"PARENTHESIS_ED":{"type":"reduce","value":1,"symbol":"factor"},"OPERATOR":{"type":"reduce","value":1,"symbol":"factor"}},{"PARENTHESIS_ED":{"type":"reduce","value":1,"symbol":"factor"},"OPERATOR":{"type":"reduce","value":1,"symbol":"factor"}},{"PARENTHESIS_ED":{"type":"shift","value":22}},{"OPERATOR":{"type":"shift","value":23},"PARENTHESIS_ED":{"type":"reduce","value":1,"symbol":"expression"}},{"PARENTHESIS_ED":{"type":"reduce","value":1,"symbol":"term"},"OPERATOR":{"type":"reduce","value":1,"symbol":"term"}},{"PARENTHESIS_ED":{"type":"reduce","value":1,"symbol":"expression"}},{"PARENTHESIS_OP":{"type":"shift","value":1},"ID":{"type":"shift","value":24},"NUMBER":{"type":"shift","value":3}},{"$$":{"type":"reduce","value":2,"symbol":"statement"}},{"PARENTHESIS_OP":{"type":"shift","value":1},"ID":{"type":"shift","value":24},"NUMBER":{"type":"shift","value":3}},{"PARENTHESIS_ED":{"type":"shift","value":27}},{"PARENTHESIS_OP":{"type":"shift","value":10},"ID":{"type":"shift","value":28},"NUMBER":{"type":"shift","value":12}},{"SEMICOLON":{"type":"reduce","value":3,"symbol":"factor"},"OPERATOR":{"type":"reduce","value":3,"symbol":"factor"}},{"PARENTHESIS_OP":{"type":"shift","value":10},"ID":{"type":"shift","value":28},"NUMBER":{"type":"shift","value":12}},{"SEMICOLON":{"type":"reduce","value":1,"symbol":"factor"},"OPERATOR":{"type":"reduce","value":1,"symbol":"factor"}},{"OPERATOR":{"type":"shift","value":19},"SEMICOLON":{"type":"reduce","value":3,"symbol":"expression"}},{"OPERATOR":{"type":"shift","value":19},"SEMICOLON":{"type":"reduce","value":3,"symbol":"term"}},{"PARENTHESIS_ED":{"type":"reduce","value":3,"symbol":"factor"},"OPERATOR":{"type":"reduce","value":3,"symbol":"factor"}},{"PARENTHESIS_ED":{"type":"reduce","value":1,"symbol":"factor"},"OPERATOR":{"type":"reduce","value":1,"symbol":"factor"}},{"OPERATOR":{"type":"shift","value":23},"PARENTHESIS_ED":{"type":"reduce","value":3,"symbol":"expression"}},{"OPERATOR":{"type":"shift","value":23},"PARENTHESIS_ED":{"type":"reduce","value":3,"symbol":"term"}}],"goto":[{"G":{"type":"goto","value":4},"statement":{"type":"goto","value":5},"expression":{"type":"goto","value":6},"term":{"type":"goto","value":7},"factor":{"type":"goto","value":8},"empty":{"type":"goto","value":9}},{"expression":{"type":"goto","value":13},"term":{"type":"goto","value":14},"factor":{"type":"goto","value":15},"empty":{"type":"goto","value":16}},{},{},{},{},{},{},{},{},{"expression":{"type":"goto","value":20},"term":{"type":"goto","value":14},"factor":{"type":"goto","value":15},"empty":{"type":"goto","value":16}},{},{},{},{},{},{},{"term":{"type":"goto","value":25},"factor":{"type":"goto","value":8}},{},{"term":{"type":"goto","value":26},"factor":{"type":"goto","value":8}},{},{"term":{"type":"goto","value":29},"factor":{"type":"goto","value":15}},{},{"term":{"type":"goto","value":30},"factor":{"type":"goto","value":15}},{},{},{},{},{},{},{}]}
 var pda_symbol_stack = [];
 var pda_state_stack = [];
 
-// 向pda輸入一個符號
 function pda_in(inpt){
 
     var symbol = inpt.symbol;
@@ -154,8 +151,14 @@ function wrapSymbol(symbol, value){
 }
 
 function pda_format_context(){
-    return "TODO:implement it";
+    var pda_symbol_stack = [];
+    var pda_state_stack = [];
+        return "pda_symbol_stack : " + pda_symbol_stack.map(function(n){return n.symbol}).join(" , ")
+            + "\n" + "pda_state_stack : " + pda_state_stack.join(" , ");
 }
+
+var SUPER_SYMBOL_END = "$$";
+
 var parser_accept_callback_result;
 function parser_reset(){
     parser_accept_callback_result = null;
@@ -170,10 +173,7 @@ function parser_parse(code){
     while(tok = lexer_out()){
         pda_in(wrapSymbol(tok.symbol, tok));
     }
-    pda_in(wrapSymbol(SUPER_T_END));
-    if(!parser_accept_callback_result){
-        throw new Error("不能停機");
-    }
+    pda_in(wrapSymbol(SUPER_SYMBOL_END));
     return parser_accept_callback_result;
 }
 
@@ -182,7 +182,17 @@ function pda_accept_callback(result){
 }
 
 
-var result = parser_parse("$a=$c+(1-2)-$d;");
-//debugger;
-console.log(JSON.stringify(result,null,2));
+var readline = require('readline');
+var rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
 
+function ask(){
+    rl.question("code pls ( like $a=1+$c; ) : ", function(answer){
+        var result = parser_parse(answer);
+        console.log(JSON.stringify(result));
+        process.nextTick(ask);
+    });
+}
+ask();
