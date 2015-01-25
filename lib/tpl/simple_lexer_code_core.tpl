@@ -1,11 +1,13 @@
 
-var rules = [<% print(rules.map(function(n){
+var lexer_rules = [<% print(rules.map(function(n){
         return  '{' + [
             '"symbol":"' + n.symbol + '"',
             '"reg":' + n.reg.toString(),
             '"fn":' + (n.fn ? n.fn.toString() : null),
         ].join(', ') + '}'
     }).join(',')) %>];
+
+var lexer_ignore = <% print(JSON.stringify(ignore)) %>;
 
 var lexer_buffer;
 var lexer_context;
@@ -38,7 +40,7 @@ function lexer_out(){ // 輸出一個符號
     }
 
     if(!tok){
-        throw (new Error("未知符號在：" + lexer_format_context() ));
+        throw (new Error("未知符號在> " + lexer_format_context() ));
     }
 
     tok.pos = lexer_context.pos;
@@ -49,9 +51,10 @@ function lexer_out(){ // 輸出一個符號
         lexer_context.lnPos = 0;
     }
     lexer_context.lnPos += tok.lnPosInc;
-
+    if(tok.symbol in lexer_ignore){
+        return lexer_out();
+    }
     return tok;
-
 }
 
 function lexer_peek(){ // 向偷看一個符號
@@ -65,7 +68,7 @@ function lexer_peek(){ // 向偷看一個符號
     }
 
     if(!tok){
-        throw (new Error("未知符號在：", + lexer_format_context() ));
+        throw (new Error("未知符號在> ", + lexer_format_context() ));
     }
 
     return tok;
@@ -77,8 +80,8 @@ function lexer_match(){ // Match a tok
     var curText = lexer_buffer.substring(lexer_context.pos);
     var tokMatched = null;
 
-    for(var idx = 0, len = rules.length; idx < len; idx++){
-        var rule = rules[idx];
+    for(var idx = 0, len = lexer_rules.length; idx < len; idx++){
+        var rule = lexer_rules[idx];
         var regRet  = rule.reg.exec(curText);  // 長的優先，同長度後來者優先
         if( regRet && ( !tokMatched || regRet[0].length >= tokMatched.length ) ){
             if(!tokMatched) tokMatched = {};
@@ -94,6 +97,6 @@ function lexer_match(){ // Match a tok
 
 function lexer_format_context(){
     var curText = lexer_buffer.substring(lexer_context.pos);
-    return curText.substring(0,128);
+    return '"' + curText.substring(0,128) + '"';
 }
 

@@ -6,9 +6,13 @@ var rl = readline.createInterface({
 
 function ask(){
     rl.question("code pls ( like $a=1+$c; ) : ", function(answer){
-        var result = parser_parse(answer);
-        console.log(JSON.stringify(result));
-        process.nextTick(ask);
+        try{
+            var result = parser_parse(answer);
+            console.log(JSON.stringify(result));
+        }catch(err){
+            console.error(err);
+        }
+        setTimeout(ask, 500);
     });
 }
 ask();
