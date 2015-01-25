@@ -5,7 +5,8 @@ exports.grammar = [
     {
         "symbol": "G",
         "rhs": [
-            [ "statement"]
+            ["statement"],
+            ["statement", "G"]
         ]
     },
     {
@@ -46,14 +47,8 @@ exports.grammar = [
 ];
 
 // 一些空白符号，先这样处理吧
-exports.ignore = [
-    {
-        "symbol": "$ignore",
-        "tokens": [
-            ["BLANK"]
-        ]
-    }
-];
+exports.ignore =  { "tokens": [ "BLANK" ] };
+
 
 // 词法规则
 exports.lex = [
