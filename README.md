@@ -1,6 +1,6 @@
 # Aeropress
 
-An LR parser generator with a simple lexer
+A LR parser generator with a simple lexer
 
 ## Features
 
